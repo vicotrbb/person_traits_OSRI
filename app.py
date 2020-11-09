@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import json
 import pickle
-from . import reference_book as rb
+import reference_book as rb
 
 def main():
     model = load_data()
@@ -36,6 +36,7 @@ def main():
         """
     )
     
+    st.sidebar.title("OSRI Questionario")
     confirm_btn = st.sidebar.button(
         label='Confirmar questionario'
     )
@@ -329,7 +330,7 @@ def main():
      
 @st.cache
 def load_data():
-    with open("OSRI_Decision_Tree_model.hdf5", 'rb') as model_file:
+    with open("files/OSRI_Decision_Tree_model.hdf5", 'rb') as model_file:
         return pickle.load(model_file)
 
 if __name__ == "__main__":
