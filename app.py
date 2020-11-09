@@ -2,9 +2,11 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import json
+import pickle
+from . import reference_book as rb
 
 def main():
-    load_data()
+    model = load_data()
     st.title('Questionario - Open Sex Role Inventory')
     st.text(
         """
@@ -32,6 +34,10 @@ def main():
             4 - Concordo;
             5 - Concordo totalmente.
         """
+    )
+    
+    confirm_btn = st.sidebar.button(
+        label='Confirmar questionario'
     )
     
     # Question sliders
@@ -300,16 +306,31 @@ def main():
         step=1)
     
     # Features array
-    features = [
+    features = np.array([
         Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,
         Q15,Q16,Q17,Q18,Q19,Q20,Q21,Q22,Q23,Q24,Q25,Q26,
         Q27,Q28,Q29,Q30,Q31,Q32,Q33,Q34,Q35,Q36,Q37,Q38,
         Q39,Q40,Q41,Q42,Q43,Q44
-    ]
+    ])
     
+    if confirm_btn:
+        ypred = model.predict(features.reshape([1, -1]))
+        
+        age = ypred[0]
+        education = rb.education[ypred[1]]
+        gender = rb.gender[ypred[2]]
+        orientation = rb.orientation[ypred[3]]
+        race = rb.race[ypred[4]]
+        religion = rb.religion[ypred[5]]
+        hand = rb.hand[ypred[6]]
+        print(ypred)
+
+
+     
 @st.cache
 def load_data():
-    pass
+    with open("OSRI_Decision_Tree_model.hdf5", 'rb') as model_file:
+        return pickle.load(model_file)
 
 if __name__ == "__main__":
     main()

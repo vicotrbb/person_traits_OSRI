@@ -26,7 +26,7 @@ target = ["age", "education", "gender", "orientation", "race", "religion", "hand
 
 # Split into train/test dataset
 X_train, X_test, y_train, y_test = train_test_split(data[features], data[target],
-                                                    train_size=0.80, test_size=0.20)
+                                                    train_size=0.90, test_size=0.10)
 
 # Fills NaN Values using SimpleImputer
 imputer = SimpleImputer(strategy="median")
